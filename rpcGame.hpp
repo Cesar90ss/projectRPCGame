@@ -1,224 +1,302 @@
-// Example program
 #include <iostream>
 #include <string>
 #include <stdlib.h> 
 using namespace std;
 
 
-class object 
+enum objectType { rock = 1, paper = 2, scissors = 3 };
+class object
 {
- 
- public: 
- 
- static object* createObject (int choice);
- virtual void printObjectName () = 0 ;
- virtual int getObjectType() = 0 ;
- virtual ~ object () 
- {
- };
+
+public:
+
+    static object* createObject(int choice);
+    virtual void printObjectName() const = 0;
+    virtual int getObjectType() const = 0;
+    virtual ~object()
+    {
+    };
 };
 
 
-class rock : public object
+class Rock : public object
 {
- public:
- 
- void printObjectName()
- {
-     cout<<"I am a rock"<<endl;
- }
- 
- int getObjectType()
- {
-     return 1;
- }
- 
-  virtual ~ rock () 
- {
- };
+public:
+
+    void printObjectName() const
+    {
+        cout << "I am a Rock" << endl;
+    }
+
+    int getObjectType() const
+    {
+        return rock;
+    }
+
+    virtual ~Rock()
+    {
+    };
 };
 
-class paper : public object
+class Paper : public object
 {
- public:
- 
- void printObjectName()
- {
-     cout<<"I am a paper"<<endl;
- }
- 
-  int getObjectType()
- {
-     return 2;
- }
- 
-  virtual ~ paper () 
- {
- };
-};
+public:
 
+    void printObjectName() const
+    {
+        cout << "I am a Paper" << endl;
+    }
 
-class scissors : public object
-{
- public:
- 
- void printObjectName()
- {
-     cout<<"I am a scissors"<<endl;
- }
- 
-  int getObjectType()
- {
-     return 3;
- }
- 
-  virtual ~  scissors () 
- {
- };
+    int getObjectType() const
+    {
+        return paper;
+    }
+
+    virtual ~Paper()
+    {
+    };
 };
 
 
+class Scissors : public object
+{
+public:
 
- object* object::createObject (const int choice)
- {
-        switch (choice) 
-   {
-        case 1:
-        return new rock;
+    void printObjectName() const
+    {
+        cout << "I am a Scissors" << endl;
+    }
+
+    int getObjectType() const
+    {
+        return scissors;
+    }
+
+    virtual ~Scissors()
+    {
+    };
+};
+
+
+
+object* object::createObject(const int choice)
+{
+    switch (choice)
+    {
+    case rock:
+        return new Rock;
         break;
-        
-        case 2:
-        return new paper;
+
+    case paper:
+        return new Paper;
         break;
-        
-        case 3:
-        return new scissors ;
+
+    case scissors:
+        return new Scissors;
         break;
-        
-        default: 
+
+    default:
         return NULL;
         break;
-   }
- }
-
-class RockPaperScissorGame 
-{
-    
-private: 
-
-int lose;
-int tie;
-int win;
-
-bool validateChoice (const int choice)
-{
-   if (choice<1 || choice>3)
-  {
-      return false;
-  }
- else
- {
-     return true;
- }
-
+    }
 }
 
-void printWinnerAndIncrementCounters (const int computerObjectType , const int  userObjectType)
+class RockPaperScissorGame
 {
-     if(userObjectType == 1 && computerObjectType == 1){
-         cout << "Rock meets Rock its a tie!" << endl;
-         tie++;
-         }
-    else if(userObjectType ==1 && computerObjectType== 2){
-         cout << "Rock is covered by Paper the computer wins!." << endl;
-         lose++;
-         }
-    else if(userObjectType == 1 && computerObjectType == 3){
-         cout << "Rock crushes Scissors you win!" << endl;
-         win++;
-         }
-    else if(userObjectType == 2 && computerObjectType == 1){
-         cout << "Paper covers Rock you win!" << endl;
-         win++;
-         }
-    else if(userObjectType == 2 && computerObjectType == 2){
-         cout << "Paper meets Paper its a tie!" << endl;
-         tie++;
-         }
-    else if(userObjectType == 2 && computerObjectType == 3){
-         cout << "Paper is cut by Scissors the computer wins!" << endl;
-         lose++;
-         }
-    else if( userObjectType == 3 && computerObjectType == 1){
-         cout << "Scissors are crushed by Rock computer wins!" << endl;
-         lose++;
-         }
-    else if( userObjectType == 3 && computerObjectType == 2){
-         cout << "Scissors cuts Paper you win!" << endl;
-         win++;
-         }
-    else if(userObjectType == 3 && computerObjectType == 3){
-         cout << "Scissors meet Scissors its a tie!" << endl;
-         tie++;
-         }
-}
+
+private:
+
+    unsigned int lose_counter;
+    unsigned int tie_counter;
+    unsigned int win_counter;
+
+    bool checkValidChoice(const unsigned int  choice)
+    {
+        if (choice == rock or choice == paper or choice == scissors)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+
+    }
+
+    void printWinnerAndIncrementCounters(const unsigned int& computerObjectType, const unsigned int& userObjectType)
+    {
+        if (userObjectType == rock && computerObjectType == rock) {
+            cout << "Rock meets Rock its a tie!" << endl;
+            tie_counter++;
+        }
+        else if (userObjectType == rock && computerObjectType == paper) {
+            cout << "Rock is covered by Paper the computer wins!." << endl;
+            lose_counter++;
+        }
+        else if (userObjectType == rock && computerObjectType == scissors) {
+            cout << "Rock crushes Scissors you win!" << endl;
+            win_counter++;
+        }
+        else if (userObjectType == paper && computerObjectType == rock) {
+            cout << "Paper covers Rock you win!" << endl;
+            win_counter++;
+        }
+        else if (userObjectType == paper && computerObjectType == paper) {
+            cout << "Paper meets Paper its a tie!" << endl;
+            tie_counter++;
+        }
+        else if (userObjectType == paper && computerObjectType == scissors) {
+            cout << "Paper is cut by Scissors the computer wins!" << endl;
+            lose_counter++;
+        }
+        else if (userObjectType == scissors && computerObjectType == rock) {
+            cout << "Scissors are crushed by Rock computer wins!" << endl;
+            lose_counter++;
+        }
+        else if (userObjectType == scissors && computerObjectType == paper) {
+            cout << "Scissors cuts Paper you win!" << endl;
+            win_counter++;
+        }
+        else if (userObjectType == scissors && computerObjectType == scissors) {
+            cout << "Scissors meet Scissors its a tie!" << endl;
+            tie_counter++;
+        }
+
+        cout << "--------- End of round ---------" << endl;
+    }
 
 
 
-public: 
+public:
 
-RockPaperScissorGame ()
-{
-    lose=0;
-    tie=0;
-    win=0;
-}
-void printGameMessage ()
-{
-    cout << "-- Lets play Rock, Paper, Scissors! --" << endl;
-    cout << "Press 1 for Rock, 2 for Paper, 3 for Scissors:" << endl;
-    cout<<"************************Game start ************************" <<endl;
-}
+    RockPaperScissorGame()
+    {
+        lose_counter = 0;
+        tie_counter = 0;
+        win_counter = 0;
+    }
+    void printGameInstructions()
+    {
+        cout << "-- Lets play Rock, Paper, Scissors! --" << endl;
+        cout << "Press 1 for Rock, 2 for Paper, 3 for Scissors:" << endl;
+        cout << "************************Game start ************************" << endl;
+    }
 
-void play (const int userChoice)
-{
-  const int computerChoice = rand() % 3 + 1;     
-  
-  if(!validateChoice(userChoice))
-  {
-    cout<<"Invalid User Choice"<<endl;
-    return;
-  }
-  
-  object* computerPlayer = object::createObject(computerChoice);
-  object* userPlayer = object::createObject(userChoice);
-  
-  cout<<"Computer Choice is :";
-  computerPlayer->printObjectName();
-  cout<<endl;
-  
-  cout<<"User Choice is :";
-  userPlayer->printObjectName(); 
-  cout<<endl;
-  
-  printWinnerAndIncrementCounters(computerPlayer->getObjectType(),userPlayer->getObjectType());
-  
-   
-         
-  cout<<"--------- End of game ---------"<<endl;
-  
-  delete computerPlayer;
-  delete userPlayer;
-  
-}
+    void printUserChoices(const object* computerPlayer, const object* userPlayer)
+    {
+        cout << "Computer Choice is :";
+        computerPlayer->printObjectName();
+        cout << endl;
 
-void printFinalResults ()
-{
-  cout<<"Wins: "<<win<<endl;
-  cout<<"Lose: "<<lose<<endl;
-  cout<<"Tie: "<<tie<<endl;
-}
+        cout << "User Choice is :";
+        userPlayer->printObjectName();
+        cout << endl;
+    }
+
+    void play(const unsigned int computerChoice, const unsigned int userChoice)
+    {
+
+        if (!checkValidChoice(userChoice) or !checkValidChoice(computerChoice))
+        {
+            cout << "Invalid User Choice" << endl;
+            return;
+        }
+
+
+        object* computerPlayer = object::createObject(computerChoice);
+        object* userPlayer = object::createObject(userChoice);
+
+        printUserChoices(computerPlayer, userPlayer);
+        printWinnerAndIncrementCounters(computerPlayer->getObjectType(), userPlayer->getObjectType());
+
+        delete computerPlayer;
+        delete userPlayer;
+
+    }
+
+    void printGameResults()
+    {
+        cout << "Wins: " << win_counter << endl;
+        cout << "Lose: " << lose_counter << endl;
+        cout << "Tie: " << tie_counter << endl;
+    }
+
+    void endGame()
+    {
+        win_counter = lose_counter = tie_counter = 0;
+    }
 };
 
 
 
+class GamePlayer
+{
+private:
+    RockPaperScissorGame gameRPC;
+    int numberOfTimes;
+
+    void printGameMessageForRPC()
+    {
+        cout << "Please Enter number of times you want to play the game" << endl;
+    }
+
+    void printErrorMessageInCaseOfWrongNumberOfTimes()
+    {
+        cout << "Invalid Number of choice" << endl;
+    }
+
+    bool retreiveNumberOfTimesFromUserAndValidateIt()
+    {
+        int numberOfTimes_local;
+
+        cin >> numberOfTimes_local;
+
+        if (numberOfTimes_local < 0)
+        {
+            cout << "Invalid number , ending game" << endl;
+            return false;
+
+        }
+
+        numberOfTimes = numberOfTimes_local;
+    }
+
+public:
+
+    GamePlayer()
+    {
+        numberOfTimes = 0;
+    }
+
+    void playGame()
+    {
+        printGameMessageForRPC();
+
+        if (retreiveNumberOfTimesFromUserAndValidateIt())
+        {
+            gameRPC.printGameInstructions();
+
+            while (numberOfTimes > 0)
+            {
+                unsigned int computerChoice = rand() % 3 + 1;
+                unsigned int userChoice;
+                cout << "Enter Choice: ";
+                cin >> userChoice;
+                gameRPC.play(computerChoice, userChoice);
+
+                numberOfTimes--;
+
+            }
+
+            gameRPC.printGameResults();
+            gameRPC.endGame();
+        }
+        else
+        {
+            printErrorMessageInCaseOfWrongNumberOfTimes();
+            gameRPC.endGame();
+            return;
+        }
+    }
+
+};
